@@ -1,4 +1,4 @@
-namespace NowSpinning.Core.Models;
+namespace Wynil.Core.Models;
 
 public sealed record MediaTrack(
     string Title,

@@ -4,10 +4,10 @@ using System.Windows;
 using System.Windows.Interop;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
-using NowSpinning.Core.Models;
-using NowSpinning.Core.Configuration;
+using Wynil.Core.Models;
+using Wynil.Core.Configuration;
 
-namespace NowSpinning.Wallpaper;
+namespace Wynil.Wallpaper;
 
 internal sealed class WallpaperWindow : Window, IDisposable
 {
@@ -30,6 +30,7 @@ internal sealed class WallpaperWindow : Window, IDisposable
         ShowActivated = false;
         AllowsTransparency = false;
         Background = System.Windows.Media.Brushes.Black;
+        _webView.DefaultBackgroundColor = System.Drawing.Color.FromArgb(255, 11, 17, 26);
         Content = _webView;
         _bridge.CommandReceived += (_, command) => CommandReceived?.Invoke(this, command);
     }
@@ -43,16 +44,16 @@ internal sealed class WallpaperWindow : Window, IDisposable
 
         var userData = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "NowSpinning", "WebView2");
+            "Wynil", "WebView2");
         var environment = await CoreWebView2Environment.CreateAsync(userDataFolder: userData);
         await _webView.EnsureCoreWebView2Async(environment);
 
         _webView.CoreWebView2.SetVirtualHostNameToFolderMapping(
-            "app.nowspinning.local", _frontendDirectory, CoreWebView2HostResourceAccessKind.DenyCors);
+            "app.wynil.local", _frontendDirectory, CoreWebView2HostResourceAccessKind.DenyCors);
         if (Directory.Exists(_artworkDirectory))
         {
             _webView.CoreWebView2.SetVirtualHostNameToFolderMapping(
-                "artwork.nowspinning.local", _artworkDirectory, CoreWebView2HostResourceAccessKind.DenyCors);
+                "artwork.wynil.local", _artworkDirectory, CoreWebView2HostResourceAccessKind.DenyCors);
         }
 
         _webView.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
@@ -61,7 +62,7 @@ internal sealed class WallpaperWindow : Window, IDisposable
         _webView.CoreWebView2.Settings.IsZoomControlEnabled = false;
         _webView.CoreWebView2.WebMessageReceived += OnWebMessageReceived;
         _bridge.Attach(_webView.CoreWebView2);
-        _webView.Source = new Uri("https://app.nowspinning.local/index.html");
+        _webView.Source = new Uri("https://app.wynil.local/index.html");
     }
 
     public async Task SetTrackAsync(MediaTrack track)

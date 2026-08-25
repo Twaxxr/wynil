@@ -1,20 +1,20 @@
 using System.Windows.Input;
 using System.Windows.Threading;
 using System.Windows.Media;
-using NowSpinning.Core.Configuration;
-using NowSpinning.Core.Models;
-using NowSpinning.Core.Mvvm;
-using NowSpinning.Core.Logging;
-using NowSpinning.Media;
-using NowSpinning.Settings;
-using NowSpinning.Wallpaper;
+using Wynil.Core.Configuration;
+using Wynil.Core.Models;
+using Wynil.Core.Mvvm;
+using Wynil.Core.Logging;
+using Wynil.Media;
+using Wynil.Settings;
+using Wynil.Wallpaper;
 using Microsoft.Win32;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.IO;
 using System.Globalization;
 
-namespace NowSpinning.App.ViewModels;
+namespace Wynil.App.ViewModels;
 
 public sealed class MainWindowViewModel : ObservableObject, IAsyncDisposable
 {
@@ -268,14 +268,14 @@ public sealed class MainWindowViewModel : ObservableObject, IAsyncDisposable
 
     private async Task TestSampleSongAsync()
     {
-        CurrentTrack = new MediaTrack("A Very Long Sample Song Title for Layout Testing", "NowSpinning Studio Ensemble", "Desktop Sessions, Volume One", "Simulation", "simulation.sample", null, true, TimeSpan.FromSeconds(61), TimeSpan.FromSeconds(213), true, true, true);
+        CurrentTrack = new MediaTrack("A Very Long Sample Song Title for Layout Testing", "Wynil Studio Ensemble", "Desktop Sessions, Volume One", "Simulation", "simulation.sample", null, true, TimeSpan.FromSeconds(61), TimeSpan.FromSeconds(213), true, true, true);
         if (WallpaperRunning) await _wallpaperHost.UpdateTrackAsync(CurrentTrack);
         ShowToast("Sample song loaded");
     }
 
     private async Task ExportSettingsAsync()
     {
-        var dialog = new Microsoft.Win32.SaveFileDialog { Filter = "NowSpinning settings (*.json)|*.json", FileName = "NowSpinning-settings.json" };
+        var dialog = new Microsoft.Win32.SaveFileDialog { Filter = "Wynil settings (*.json)|*.json", FileName = "Wynil-settings.json" };
         if (dialog.ShowDialog() != true) return;
         await JsonConfigurationService.ExportAsync(dialog.FileName, Options);
         ShowToast("Settings exported");
@@ -283,7 +283,7 @@ public sealed class MainWindowViewModel : ObservableObject, IAsyncDisposable
 
     private async Task ImportSettingsAsync()
     {
-        var dialog = new Microsoft.Win32.OpenFileDialog { Filter = "NowSpinning settings (*.json)|*.json" };
+        var dialog = new Microsoft.Win32.OpenFileDialog { Filter = "Wynil settings (*.json)|*.json" };
         if (dialog.ShowDialog() != true) return;
         var imported = await JsonConfigurationService.ImportAsync(dialog.FileName);
         Options.Scene = imported.Scene;
@@ -302,7 +302,7 @@ public sealed class MainWindowViewModel : ObservableObject, IAsyncDisposable
 
     private Task OpenLogsAsync()
     {
-        var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NowSpinning", "Logs");
+        var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Wynil", "Logs");
         Directory.CreateDirectory(path);
         Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
         return Task.CompletedTask;

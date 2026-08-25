@@ -1,8 +1,8 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using NowSpinning.Core.Logging;
+using Wynil.Core.Logging;
 
-namespace NowSpinning.Core.Configuration;
+namespace Wynil.Core.Configuration;
 
 public static class JsonConfigurationService
 {

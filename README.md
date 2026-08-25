@@ -1,8 +1,8 @@
-# NowSpinning
+# Wynil
 
-NowSpinning is an original Windows 10/11 live wallpaper that turns the current Windows media session into a cinematic top-down turntable scene. It uses C#/.NET 8, WPF, Windows GSMTC, WebView2, TypeScript, and Vite. Basic Spotify, browser, YouTube, Apple Music, SoundCloud, and other compatible playback detection requires no service-specific login.
+Wynil is an original Windows 10/11 live wallpaper that turns the current Windows media session into a cinematic top-down turntable scene. It uses C#/.NET 8, WPF, Windows GSMTC, WebView2, TypeScript, and Vite. Basic Spotify, browser, YouTube, Apple Music, SoundCloud, and other compatible playback detection requires no service-specific login.
 
-![NowSpinning settings application](docs/screenshot.png)
+![Wynil settings application](docs/screenshot.png)
 
 ## Features
 
@@ -25,34 +25,34 @@ NowSpinning is an original Windows 10/11 live wallpaper that turns the current W
 
 ```text
 Windows media sessions ─┐
-                       ├─ NowSpinning.Media ── immutable MediaTrack snapshots
+                       ├─ Wynil.Media ── immutable MediaTrack snapshots
 Browser extension ─────┘                            │
                                                    ▼
-WPF settings/tray ── NowSpinning.App ── NowSpinning.Wallpaper
+WPF settings/tray ── Wynil.App ── Wynil.Wallpaper
                                                    │ typed JSON
                                                    ▼
                                       WebView2 / Lively TypeScript scene
 ```
 
-- `NowSpinning.Core`: dependency-free models, configuration, MVVM, palette, and monitor calculations
-- `NowSpinning.Media`: GSMTC, session selection, artwork cache, browser server, simulation, and loopback analysis
-- `NowSpinning.Wallpaper`: WebView2 bridge, WorkerW integration, per-monitor windows, and interaction hotkey
-- `NowSpinning.Settings`: startup registration and settings boundaries
-- `NowSpinning.App`: WPF composition root, settings UI, tray, and safe shutdown
-- `NowSpinning.Frontend`: responsive Vite/TypeScript scene
+- `Wynil.Core`: dependency-free models, configuration, MVVM, palette, and monitor calculations
+- `Wynil.Media`: GSMTC, session selection, artwork cache, browser server, simulation, and loopback analysis
+- `Wynil.Wallpaper`: WebView2 bridge, WorkerW integration, per-monitor windows, and interaction hotkey
+- `Wynil.Settings`: startup registration and settings boundaries
+- `Wynil.App`: WPF composition root, settings UI, tray, and safe shutdown
+- `Wynil.Frontend`: responsive Vite/TypeScript scene
 
 ## Run and install
 
-The compiled setup is at `artifacts/installer/NowSpinning-Setup-1.0.0.exe`. It offers optional desktop/startup shortcuts, includes a self-contained .NET runtime, and runs the official WebView2 Evergreen bootstrapper only when WebView2 is missing.
+The compiled setup is at `artifacts/installer/Wynil-Setup-1.0.0.exe`. It offers optional desktop/startup shortcuts, includes a self-contained .NET runtime, and runs the official WebView2 Evergreen bootstrapper only when WebView2 is missing.
 
 For development:
 
 ```powershell
-npm install --prefix src/NowSpinning.Frontend
-npm run build --prefix src/NowSpinning.Frontend
-dotnet build NowSpinning.sln -c Release
-dotnet test NowSpinning.sln -c Release --no-build
-dotnet run --project src/NowSpinning.App/NowSpinning.App.csproj
+npm install --prefix src/Wynil.Frontend
+npm run build --prefix src/Wynil.Frontend
+dotnet build Wynil.sln -c Release
+dotnet test Wynil.sln -c Release --no-build
+dotnet run --project src/Wynil.App/Wynil.App.csproj
 ```
 
 Build every release artifact:
@@ -61,11 +61,11 @@ Build every release artifact:
 powershell -ExecutionPolicy Bypass -File scripts/build.ps1 -Configuration Release -Installer
 ```
 
-The temporary product name and default behavior live in `src/NowSpinning.App/appsettings.json`. Per-user changes are written atomically to `%LocalAppData%\NowSpinning\settings.json`.
+The temporary product name and default behavior live in `src/Wynil.App/appsettings.json`. Per-user changes are written atomically to `%LocalAppData%\Wynil\settings.json`.
 
 ## Browser fallback
 
-1. Run the desktop companion once. It creates `%LocalAppData%\NowSpinning\browser-token.txt` with a random 256-bit token.
+1. Run the desktop companion once. It creates `%LocalAppData%\Wynil\browser-token.txt` with a random 256-bit token.
 2. Open the browser extension manager, enable developer mode, and load `browser-extension` as an unpacked extension.
 3. Open the extension options and paste the token.
 
@@ -73,15 +73,15 @@ The server binds only to `127.0.0.1:17842`, compares tokens in constant time, ac
 
 ## Lively Wallpaper
 
-Run the release build, then execute `lively-package/configure-lively.ps1`. Import the `lively-package` folder into Lively and keep the NowSpinning companion running. The helper adds the current account's random viewer token to the local package metadata.
+Run the release build, then execute `lively-package/configure-lively.ps1`. Import the `lively-package` folder into Lively and keep the Wynil companion running. The helper adds the current account's random viewer token to the local package metadata.
 
 ## Troubleshooting
 
 - **No song appears:** verify the application exposes a media entry in Windows quick settings. Otherwise install the optional browser bridge.
 - **Wallpaper does not appear:** restart Windows Explorer, pause/resume from the tray, and confirm WebView2 Runtime is installed.
 - **Desktop icons stop accepting clicks:** release Alt. Stopping the wallpaper from the tray closes all child windows and restores Explorer ownership.
-- **Browser bridge cannot connect:** keep NowSpinning running, verify port 17842 is free, and recopy the current token into extension options.
-- **Artwork is missing:** the publishing application did not provide a thumbnail. NowSpinning intentionally does not scrape unofficial artwork sites.
+- **Browser bridge cannot connect:** keep Wynil running, verify port 17842 is free, and recopy the current token into extension options.
+- **Artwork is missing:** the publishing application did not provide a thumbnail. Wynil intentionally does not scrape unofficial artwork sites.
 - **High GPU usage:** choose 30 FPS, low-power mode, reduce motion, and disable dust/parallax in settings.
 
 ## Known Windows limitations

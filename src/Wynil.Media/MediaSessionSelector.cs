@@ -1,4 +1,4 @@
-namespace NowSpinning.Media;
+namespace Wynil.Media;
 
 public static class MediaSessionSelector
 {

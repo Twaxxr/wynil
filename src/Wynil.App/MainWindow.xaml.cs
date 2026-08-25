@@ -4,9 +4,9 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
-using NowSpinning.App.ViewModels;
+using Wynil.App.ViewModels;
 
-namespace NowSpinning.App;
+namespace Wynil.App;
 
 public partial class MainWindow : Window
 {

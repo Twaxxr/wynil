@@ -1,10 +1,10 @@
-namespace NowSpinning.Core.Configuration;
+namespace Wynil.Core.Configuration;
 
 public sealed class AppOptions
 {
     public const int CurrentConfigurationVersion = 3;
     public int ConfigurationVersion { get; set; }
-    public string ProductName { get; set; } = "NowSpinning";
+    public string ProductName { get; set; } = "Wynil";
     public bool DeveloperSimulationMode { get; set; }
     public GeneralOptions General { get; set; } = new();
     public WallpaperOptions Wallpaper { get; set; } = new();

@@ -1,6 +1,6 @@
 using NAudio.Wave;
 
-namespace NowSpinning.Media;
+namespace Wynil.Media;
 
 public sealed class AudioReactiveService : IDisposable
 {

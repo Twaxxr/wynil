@@ -1,4 +1,4 @@
-namespace NowSpinning.Core.Layout;
+namespace Wynil.Core.Layout;
 
 public readonly record struct PixelRectangle(int X, int Y, int Width, int Height)
 {

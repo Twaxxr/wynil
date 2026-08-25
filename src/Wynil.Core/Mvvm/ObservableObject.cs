@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace NowSpinning.Core.Mvvm;
+namespace Wynil.Core.Mvvm;
 
 public abstract class ObservableObject : INotifyPropertyChanged
 {

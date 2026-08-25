@@ -1,6 +1,6 @@
 using System.Windows.Controls;
 
-namespace NowSpinning.App.Controls;
+namespace Wynil.App.Controls;
 
 public partial class NowPlayingCard : System.Windows.Controls.UserControl, IDisposable
 {

@@ -2,12 +2,12 @@ using System.IO;
 using System.Windows.Interop;
 using System.Windows.Threading;
 using Microsoft.Win32;
-using NowSpinning.Core.Models;
-using NowSpinning.Core.Configuration;
-using NowSpinning.Core.Logging;
+using Wynil.Core.Models;
+using Wynil.Core.Configuration;
+using Wynil.Core.Logging;
 using Forms = System.Windows.Forms;
 
-namespace NowSpinning.Wallpaper;
+namespace Wynil.Wallpaper;
 
 public sealed class NativeWallpaperHost : IWallpaperHost
 {
@@ -27,7 +27,7 @@ public sealed class NativeWallpaperHost : IWallpaperHost
     {
         _frontendDirectory = frontendDirectory ?? Path.Combine(AppContext.BaseDirectory, "Frontend");
         _artworkDirectory = artworkDirectory ?? Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NowSpinning", "Artwork");
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Wynil", "Artwork");
         _hotkeyTimer.Tick += OnHotkeyTick;
         _healthTimer.Tick += OnHealthTick;
         _runtimeTimer.Tick += OnRuntimeTick;

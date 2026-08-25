@@ -1,19 +1,16 @@
-<Window x:Class="NowSpinning.App.MainWindow"
+<Window x:Class="Wynil.App.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
-        xmlns:controls="clr-namespace:NowSpinning.App.Controls"
-        xmlns:views="clr-namespace:NowSpinning.App.Views"
-        Title="{Binding ProductName}" Width="1450" Height="900" MinWidth="1100" MinHeight="700"
+        xmlns:controls="clr-namespace:Wynil.App.Controls"
+        xmlns:views="clr-namespace:Wynil.App.Views"
+        Title="{Binding ProductName}" Icon="/Wynil.App;component/Assets/logo.png" Width="1450" Height="900" MinWidth="1100" MinHeight="700"
         WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="CanResize" Background="{DynamicResource AppBackgroundBrush}"
         Foreground="{DynamicResource PrimaryTextBrush}" TextOptions.TextFormattingMode="Display">
     <shell:WindowChrome.WindowChrome>
         <shell:WindowChrome CaptionHeight="0" ResizeBorderThickness="7" CornerRadius="11" GlassFrameThickness="0" UseAeroCaptionButtons="False" />
     </shell:WindowChrome.WindowChrome>
     <Window.Resources>
-        <Style x:Key="StatusBadge" TargetType="Border">
-            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/><Setter Property="BorderThickness" Value="1"/><Setter Property="CornerRadius" Value="4"/><Setter Property="Padding" Value="9,4"/><Setter Property="Margin" Value="5,0,0,0"/><Setter Property="Background" Value="#2508101A"/>
-        </Style>
         <Style x:Key="SignalBar" TargetType="Rectangle">
             <Setter Property="Width" Value="2"/><Setter Property="Fill" Value="{DynamicResource SuccessBrush}"/><Setter Property="Margin" Value="1,0"/><Setter Property="VerticalAlignment" Value="Bottom"/>
             <Style.Triggers><DataTrigger Binding="{Binding SignalActive}" Value="False"><Setter Property="Opacity" Value="0.25"/></DataTrigger></Style.Triggers>
@@ -27,14 +24,8 @@
             <Grid x:Name="TitleBar" Background="#35030A12" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
                 <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="32,0,0,0">
-                    <Border Width="62" Height="62" CornerRadius="11" BorderBrush="#80E9A449" BorderThickness="1" Background="#17130F" Margin="0,0,24,0">
-                        <Grid>
-                            <Ellipse Width="42" Height="42" Stroke="#8A765C" StrokeThickness="1" Fill="#171719" />
-                            <Ellipse Width="29" Height="29" Stroke="#5F5143" StrokeThickness="1" />
-                            <Ellipse Width="15" Height="15" Fill="{DynamicResource AccentBrush}" />
-                            <Ellipse Width="3" Height="3" Fill="#15100A" />
-                            <Path Data="M45,8 L49,8 47,12Z" Fill="{DynamicResource AccentBrush}" />
-                        </Grid>
+                    <Border Width="62" Height="62" CornerRadius="11" BorderBrush="#805B8CE9" BorderThickness="1" Background="#0B111A" Margin="0,0,24,0">
+                        <Image Source="/Wynil.App;component/Assets/logo.png" Width="52" Height="52" Stretch="Uniform" />
                     </Border>
                     <StackPanel VerticalAlignment="Center">
                         <TextBlock Text="{Binding ProductName}" FontSize="31" FontWeight="Bold" />
@@ -102,12 +93,9 @@
                             <Rectangle Style="{StaticResource SignalBar}" Height="5"/><Rectangle Style="{StaticResource SignalBar}" Height="9"/><Rectangle Style="{StaticResource SignalBar}" Height="13"/><Rectangle Style="{StaticResource SignalBar}" Height="17"/>
                         </StackPanel>
                     </StackPanel>
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Border Style="{StaticResource StatusBadge}"><TextBlock Text="Native" Style="{StaticResource MutedText}" FontSize="11"/></Border>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Visibility="Collapsed">
                         <TextBlock Text="·" Foreground="#526176" VerticalAlignment="Center" Margin="5,0,0,0"/>
-                        <Border Style="{StaticResource StatusBadge}"><TextBlock Text="WebView2" Style="{StaticResource MutedText}" FontSize="11"/></Border>
                         <TextBlock Text="·" Foreground="#526176" VerticalAlignment="Center" Margin="5,0,0,0"/>
-                        <Border Style="{StaticResource StatusBadge}"><TextBlock Text="GSMTC" Style="{StaticResource MutedText}" FontSize="11"/></Border>
                     </StackPanel>
                 </Grid>
             </Border>

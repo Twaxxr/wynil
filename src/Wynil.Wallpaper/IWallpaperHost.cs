@@ -1,7 +1,7 @@
-using NowSpinning.Core.Models;
-using NowSpinning.Core.Configuration;
+using Wynil.Core.Models;
+using Wynil.Core.Configuration;
 
-namespace NowSpinning.Wallpaper;
+namespace Wynil.Wallpaper;
 
 public interface IWallpaperHost : IAsyncDisposable
 {

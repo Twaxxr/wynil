@@ -1,6 +1,6 @@
-using NowSpinning.Core.Layout;
+using Wynil.Core.Layout;
 
-namespace NowSpinning.Tests;
+namespace Wynil.Tests;
 
 [TestClass]
 public sealed class MonitorLayoutTests

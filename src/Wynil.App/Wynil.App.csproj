@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -11,16 +11,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NowSpinning.Core\NowSpinning.Core.csproj" />
-    <ProjectReference Include="..\NowSpinning.Media\NowSpinning.Media.csproj" />
-    <ProjectReference Include="..\NowSpinning.Settings\NowSpinning.Settings.csproj" />
-    <ProjectReference Include="..\NowSpinning.Wallpaper\NowSpinning.Wallpaper.csproj" />
+    <ProjectReference Include="..\Wynil.Core\Wynil.Core.csproj" />
+    <ProjectReference Include="..\Wynil.Media\Wynil.Media.csproj" />
+    <ProjectReference Include="..\Wynil.Settings\Wynil.Settings.csproj" />
+    <ProjectReference Include="..\Wynil.Wallpaper\Wynil.Wallpaper.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Content Include="..\NowSpinning.Frontend\dist\**\*">
+    <Resource Include="..\..\assets\logo.png">
+      <Link>Assets\logo.png</Link>
+    </Resource>
+    <Content Include="..\Wynil.Frontend\dist\**\*">
       <Link>Frontend\%(RecursiveDir)%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

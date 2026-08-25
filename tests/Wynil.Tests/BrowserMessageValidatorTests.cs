@@ -1,6 +1,6 @@
-using NowSpinning.Media;
+using Wynil.Media;
 
-namespace NowSpinning.Tests;
+namespace Wynil.Tests;
 
 [TestClass]
 public sealed class BrowserMessageValidatorTests

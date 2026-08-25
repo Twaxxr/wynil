@@ -4,6 +4,6 @@ script.onload = () => script.remove();
 (document.head || document.documentElement).appendChild(script);
 
 window.addEventListener('message', (event) => {
-  if (event.source !== window || event.data?.channel !== 'nowspinning-media-v1') return;
+  if (event.source !== window || event.data?.channel !== 'wynil-media-v1') return;
   chrome.runtime.sendMessage({ type: 'media', payload: event.data.payload });
 });

@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
 
-namespace NowSpinning.Media;
+namespace Wynil.Media;
 
 public sealed class ArtworkCache
 {
@@ -10,7 +10,7 @@ public sealed class ArtworkCache
     {
         _directory = directory ?? Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "NowSpinning", "Artwork");
+            "Wynil", "Artwork");
         Directory.CreateDirectory(_directory);
     }
 

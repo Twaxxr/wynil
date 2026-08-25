@@ -1,6 +1,6 @@
-using NowSpinning.Core.Models;
+using Wynil.Core.Models;
 
-namespace NowSpinning.Tests;
+namespace Wynil.Tests;
 
 [TestClass]
 public sealed class MediaStateReducerTests

@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NowSpinning.Core\NowSpinning.Core.csproj" />
+    <ProjectReference Include="..\Wynil.Core\Wynil.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,4 @@
-namespace NowSpinning.Core.Configuration;
+namespace Wynil.Core.Configuration;
 
 public sealed record ThemePreset(string Name, WallpaperSettings Settings);
 

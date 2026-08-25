@@ -1,6 +1,6 @@
 $ErrorActionPreference = 'Stop'
-$tokenPath = Join-Path $env:LOCALAPPDATA 'NowSpinning\browser-token.txt'
-if (-not (Test-Path -LiteralPath $tokenPath)) { throw 'Run the NowSpinning companion once before configuring the Lively package.' }
+$tokenPath = Join-Path $env:LOCALAPPDATA 'Wynil\browser-token.txt'
+if (-not (Test-Path -LiteralPath $tokenPath)) { throw 'Run the Wynil companion once before configuring the Lively package.' }
 $token = (Get-Content -Raw -LiteralPath $tokenPath).Trim()
 if ($token -notmatch '^[a-f0-9]{64}$') { throw 'The local companion token is invalid.' }
 $metadataPath = Join-Path $PSScriptRoot 'LivelyInfo.json'

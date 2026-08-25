@@ -1,12 +1,12 @@
 using System.Text.Json;
 
-namespace NowSpinning.Core.Logging;
+namespace Wynil.Core.Logging;
 
 public static class AppLog
 {
     private static readonly object Gate = new();
     private static readonly string LogDirectory = Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NowSpinning", "Logs");
+        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Wynil", "Logs");
 
     public static void Write(string eventName, object? data = null)
     {
@@ -16,7 +16,7 @@ public static class AppLog
             lock (Gate)
             {
                 Directory.CreateDirectory(LogDirectory);
-                File.AppendAllText(Path.Combine(LogDirectory, "nowspinning.jsonl"), line + Environment.NewLine);
+                File.AppendAllText(Path.Combine(LogDirectory, "wynil.jsonl"), line + Environment.NewLine);
             }
         }
         catch (IOException) { }

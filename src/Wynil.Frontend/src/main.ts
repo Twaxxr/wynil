@@ -31,9 +31,14 @@ let runtimePaused = false;
 let audioReactiveEnabled = false;
 let audioTarget = 0;
 let audioLevel = 0;
+let vinylSpeed = 1;
+let recordRotation = 0;
 let positionSeconds = 0;
 let durationSeconds = 0;
 let timelineAt = performance.now();
+let lastFrameAt = timelineAt;
+let artworkTransitionTimer: number | undefined;
+let trackTransitionTimer: number | undefined;
 const paletteCache = new Map<string, string>();
 
 function applyPointer(x: number, y: number): void {
@@ -80,12 +85,14 @@ function setArtwork(url: string | null, identity: string): void {
   const preload = new Image();
   preload.draggable = false;
   preload.onload = () => {
+    if (trackIdentity !== identity) return;
     const safeUrl = url.replaceAll('"', '%22');
     scene.classList.add('artwork-changing');
     cover.style.backgroundImage = `url("${safeUrl}")`; label.style.backgroundImage = `url("${safeUrl}")`;
     cover.classList.remove('fallback'); label.classList.remove('fallback');
     currentArtwork = url;
-    window.setTimeout(() => scene.classList.remove('artwork-changing'), 360);
+    if (artworkTransitionTimer !== undefined) window.clearTimeout(artworkTransitionTimer);
+    artworkTransitionTimer = window.setTimeout(() => scene.classList.remove('artwork-changing'), 360);
     applyPalette(preload, identity);
   };
   preload.src = url;
@@ -113,11 +120,12 @@ function applyTrack(track: TrackPayload): void {
   title.textContent = track.title || 'Play something to begin';
   artist.textContent = track.artist || 'Your music will appear here';
   album.textContent = track.album || '';
-  source.textContent = track.sourceApplication || 'NOWSPINNING';
+  source.textContent = track.sourceApplication || 'WYNIL';
   title.classList.toggle('long', title.textContent.length > 34);
   setArtwork(track.artworkUrl, track.identity);
   scene.classList.toggle('idle', !track.title || track.title === 'Play something to begin');
-  window.setTimeout(() => scene.classList.remove('track-changing'), 420);
+  if (trackTransitionTimer !== undefined) window.clearTimeout(trackTransitionTimer);
+  trackTransitionTimer = window.setTimeout(() => scene.classList.remove('track-changing'), 420);
 }
 
 function applySettings(settings: SettingsPayload): void {
@@ -142,7 +150,7 @@ function applySettings(settings: SettingsPayload): void {
   scene.style.setProperty('--grain-opacity', String(settings.filmGrainIntensity * .45));
   scene.style.setProperty('--dust-opacity', String(settings.dustIntensity));
   scene.style.setProperty('--ambient-opacity', String(settings.ambientLightingIntensity));
-  scene.style.setProperty('--vinyl-duration', `${1.8 / Math.max(.25, settings.vinylSpeed)}s`);
+  vinylSpeed = Math.max(.25, settings.vinylSpeed);
   scene.style.setProperty('--transition-duration', `${settings.transitionSeconds}s`);
   if (!mouseParallaxEnabled) {
     scene.style.setProperty('--parallax-x', '0px'); scene.style.setProperty('--parallax-y', '0px');
@@ -154,12 +162,13 @@ function acceptMessage(message: NativeMessage): void {
   if (!message || message.version !== 1) return;
   if (message.type === 'media.track') applyTrack(message.payload as unknown as TrackPayload);
   else if (message.type === 'media.playback') {
-    isPlaying = Boolean(message.payload?.isPlaying); timelineAt = performance.now();
+    isPlaying = Boolean(message.payload?.isPlaying); timelineAt = performance.now(); lastFrameAt = timelineAt;
     scene.classList.toggle('playing', isPlaying);
   } else if (message.type === 'media.timeline') {
     positionSeconds = Number(message.payload?.positionSeconds ?? 0);
     durationSeconds = Number(message.payload?.durationSeconds ?? 0);
     timelineAt = performance.now();
+    lastFrameAt = timelineAt;
   } else if (message.type === 'audio.level') {
     applyAudioLevel(Number(message.payload?.level ?? 0));
   } else if (message.type === 'settings.update') {
@@ -183,7 +192,7 @@ window.chrome?.webview?.addEventListener('message', (event: MessageEvent<NativeM
 if (!window.chrome?.webview) {
   const token = new URLSearchParams(location.search).get('token');
   if (token && /^[a-f0-9]{64}$/.test(token)) {
-    const socket = new WebSocket(`ws://127.0.0.1:17842/nowspinning/?role=viewer&token=${encodeURIComponent(token)}`);
+    const socket = new WebSocket(`ws://127.0.0.1:17842/wynil/?role=viewer&token=${encodeURIComponent(token)}`);
     socket.onmessage = (event) => { try { acceptMessage(JSON.parse(String(event.data)) as NativeMessage); } catch { /* local payload rejected */ } };
   }
 }
@@ -207,9 +216,14 @@ for (let index = 0; index < 24; index++) {
 
 function updateTimeline(now: number): void {
   if (runtimePaused) {
+    lastFrameAt = now;
     window.setTimeout(() => requestAnimationFrame(updateTimeline), 250);
     return;
   }
+  const elapsedMilliseconds = clamp(now - lastFrameAt, 0, 100);
+  lastFrameAt = now;
+  if (isPlaying) recordRotation += elapsedMilliseconds * .2 * vinylSpeed;
+  scene.style.setProperty('--record-rotation', `${recordRotation % 360}deg`);
   renderAudioVisuals();
   const value = Math.min(durationSeconds, positionSeconds + (isPlaying ? (now - timelineAt) / 1000 : 0));
   scene.style.setProperty('--progress', durationSeconds > 0 ? String(value / durationSeconds) : '0');

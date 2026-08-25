@@ -1,13 +1,13 @@
 using System.Drawing;
 using System.IO;
 using System.Windows;
-using NowSpinning.App.ViewModels;
-using NowSpinning.Core.Configuration;
-using NowSpinning.Media;
-using NowSpinning.Wallpaper;
+using Wynil.App.ViewModels;
+using Wynil.Core.Configuration;
+using Wynil.Media;
+using Wynil.Wallpaper;
 using Forms = System.Windows.Forms;
 
-namespace NowSpinning.App;
+namespace Wynil.App;
 
 public partial class App : System.Windows.Application, IDisposable
 {
@@ -18,6 +18,7 @@ public partial class App : System.Windows.Application, IDisposable
 
     protected override async void OnStartup(StartupEventArgs e)
     {
+        Environment.SetEnvironmentVariable("WEBVIEW2_DEFAULT_BACKGROUND_COLOR", "FF0B111A");
         base.OnStartup(e);
         ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
@@ -26,7 +27,7 @@ public partial class App : System.Windows.Application, IDisposable
             var defaultsPath = Path.Combine(AppContext.BaseDirectory, "appsettings.json");
             var configurationPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "NowSpinning", "settings.json");
+                "Wynil", "settings.json");
             var options = File.Exists(configurationPath)
                 ? await JsonConfigurationService.LoadAsync(configurationPath)
                 : await JsonConfigurationService.LoadAsync(defaultsPath);
@@ -53,10 +54,10 @@ public partial class App : System.Windows.Application, IDisposable
         }
         catch (Exception exception)
         {
-            var errorDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NowSpinning");
+            var errorDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Wynil");
             Directory.CreateDirectory(errorDirectory);
             File.WriteAllText(Path.Combine(errorDirectory, "startup-error.log"), exception.ToString());
-            System.Windows.MessageBox.Show(exception.Message, "NowSpinning could not start", MessageBoxButton.OK, MessageBoxImage.Error);
+            System.Windows.MessageBox.Show(exception.Message, "Wynil could not start", MessageBoxButton.OK, MessageBoxImage.Error);
             Shutdown(1);
         }
     }
@@ -72,12 +73,22 @@ public partial class App : System.Windows.Application, IDisposable
 
         _trayIcon = new Forms.NotifyIcon
         {
-            Icon = SystemIcons.Application,
+            Icon = CreateTrayIcon(),
             Text = productName,
             Visible = true,
             ContextMenuStrip = menu
         };
         _trayIcon.DoubleClick += (_, _) => ShowSettings();
+    }
+
+    private static Icon CreateTrayIcon()
+    {
+        var resource = System.Windows.Application.GetResourceStream(
+            new Uri("pack://application:,,,/Wynil.App;component/Assets/logo.png"));
+        if (resource is null) return SystemIcons.Application;
+        using var stream = resource.Stream;
+        using var bitmap = new Bitmap(stream);
+        return Icon.FromHandle(bitmap.GetHicon());
     }
 
     private void ShowSettings()

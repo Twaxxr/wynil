@@ -1,6 +1,6 @@
 # Known Windows limitations
 
-WorkerW wallpaper hosting depends on an undocumented Explorer hierarchy. NowSpinning owns only its WPF windows, always closes them during normal shutdown, and never modifies Explorer windows. If Explorer restarts, pause and resume wallpaper mode to rediscover WorkerW.
+WorkerW wallpaper hosting depends on an undocumented Explorer hierarchy. Wynil owns only its WPF windows, always closes them during normal shutdown, and never modifies Explorer windows. If Explorer restarts, pause and resume wallpaper mode to rediscover WorkerW.
 
 Windows media metadata is advisory. Source applications decide which fields and commands are exposed. Browser fallback exists for pages that do not publish useful GSMTC data, but browser security still prevents access to protected media details.
 

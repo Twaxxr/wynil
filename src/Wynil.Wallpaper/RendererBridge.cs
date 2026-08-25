@@ -2,10 +2,10 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.IO;
 using Microsoft.Web.WebView2.Core;
-using NowSpinning.Core.Configuration;
-using NowSpinning.Core.Models;
+using Wynil.Core.Configuration;
+using Wynil.Core.Models;
 
-namespace NowSpinning.Wallpaper;
+namespace Wynil.Wallpaper;
 
 internal sealed class RendererBridge
 {
@@ -145,5 +145,5 @@ internal sealed class RendererBridge
         _webView!.PostWebMessageAsJson(JsonSerializer.Serialize(new { version = 1, type, requestId, payload }, JsonOptions));
 
     private static string? ArtworkUrl(string? path) => path is null
-        ? null : $"https://artwork.nowspinning.local/{Uri.EscapeDataString(Path.GetFileName(path))}";
+        ? null : $"https://artwork.wynil.local/{Uri.EscapeDataString(Path.GetFileName(path))}";
 }

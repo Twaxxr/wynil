@@ -18,7 +18,7 @@
     const serialized = JSON.stringify(payload);
     if (serialized === last) return;
     last = serialized;
-    window.postMessage({ channel: 'nowspinning-media-v1', payload }, location.origin);
+    window.postMessage({ channel: 'wynil-media-v1', payload }, location.origin);
   };
   document.addEventListener('play', publish, true);
   document.addEventListener('pause', publish, true);

@@ -1,6 +1,6 @@
 using Microsoft.Win32;
 
-namespace NowSpinning.Settings;
+namespace Wynil.Settings;
 
 public static class StartupRegistrationService
 {

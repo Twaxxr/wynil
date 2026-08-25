@@ -1,6 +1,6 @@
-using NowSpinning.Core.Configuration;
+using Wynil.Core.Configuration;
 
-namespace NowSpinning.Tests;
+namespace Wynil.Tests;
 
 [TestClass]
 public sealed class ConfigurationRoundTripTests
@@ -8,7 +8,7 @@ public sealed class ConfigurationRoundTripTests
     [TestMethod]
     public async Task ConfigurationRoundTripsToJson()
     {
-        var directory = Path.Combine(Path.GetTempPath(), $"nowspinning-test-{Guid.NewGuid():N}");
+        var directory = Path.Combine(Path.GetTempPath(), $"wynil-test-{Guid.NewGuid():N}");
         var path = Path.Combine(directory, "settings.json");
         try
         {

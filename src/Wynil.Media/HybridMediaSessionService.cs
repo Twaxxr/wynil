@@ -1,7 +1,7 @@
 using System.Net;
-using NowSpinning.Core.Models;
+using Wynil.Core.Models;
 
-namespace NowSpinning.Media;
+namespace Wynil.Media;
 
 public sealed class HybridMediaSessionService : IMediaSessionService
 {

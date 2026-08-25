@@ -1,6 +1,6 @@
-using NowSpinning.Core.Configuration;
+using Wynil.Core.Configuration;
 
-namespace NowSpinning.Tests;
+namespace Wynil.Tests;
 
 [TestClass]
 public sealed class ConfigurationTests
@@ -12,7 +12,7 @@ public sealed class ConfigurationTests
 
         var options = await JsonConfigurationService.LoadAsync(missingPath);
 
-        Assert.AreEqual("NowSpinning", options.ProductName);
+        Assert.AreEqual("Wynil", options.ProductName);
         Assert.AreEqual("Native", options.Wallpaper.Mode);
         Assert.AreEqual(60, options.Wallpaper.TargetFramesPerSecond);
     }

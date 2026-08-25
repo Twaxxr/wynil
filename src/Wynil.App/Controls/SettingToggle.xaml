@@ -1,4 +1,4 @@
-<UserControl x:Class="NowSpinning.App.Controls.SettingToggle"
+<UserControl x:Class="Wynil.App.Controls.SettingToggle"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Name="Root" Focusable="False">

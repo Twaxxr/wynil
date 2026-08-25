@@ -1,4 +1,4 @@
-namespace NowSpinning.App.Views;
+namespace Wynil.App.Views;
 
 public partial class DiagnosticsSettingsView : System.Windows.Controls.UserControl
 {

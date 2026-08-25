@@ -1,4 +1,4 @@
-<UserControl x:Class="NowSpinning.App.Views.MediaSettingsView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:NowSpinning.App.Controls">
+<UserControl x:Class="Wynil.App.Views.MediaSettingsView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:Wynil.App.Controls">
     <ScrollViewer VerticalScrollBarVisibility="Auto"><StackPanel Margin="0,22,8,16">
         <TextBlock Text="Media Sources" Style="{StaticResource SectionHeading}" />
         <Border Style="{StaticResource SettingRow}" Padding="12" Margin="0,0,0,7"><StackPanel><TextBlock Text="Preferred media source" Style="{StaticResource MutedText}" Margin="0,0,0,7"/><TextBox Text="{Binding Options.Media.PreferredSource, UpdateSourceTrigger=PropertyChanged}" ToolTip="Windows application ID, or leave empty for automatic selection"/></StackPanel></Border>

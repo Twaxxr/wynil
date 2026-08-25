@@ -1,4 +1,4 @@
-namespace NowSpinning.Core.Artwork;
+namespace Wynil.Core.Artwork;
 
 public sealed record ArtworkPalette(string Primary, string Secondary, string Accent, string Text);
 

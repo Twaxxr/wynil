@@ -2,7 +2,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace NowSpinning.App.Controls;
+namespace Wynil.App.Controls;
 
 public partial class SettingToggle : System.Windows.Controls.UserControl
 {

@@ -1,7 +1,7 @@
 using System.Runtime.InteropServices;
 using System.IO;
 
-namespace NowSpinning.Wallpaper;
+namespace Wynil.Wallpaper;
 
 internal static partial class WorkerWInterop
 {
@@ -38,7 +38,7 @@ internal static partial class WorkerWInterop
         exStyles = (exStyles | WsExTransparent | WsExToolWindow | WsExNoActivate) & ~(WsExTopMost | WsExAppWindow);
         _ = SetWindowLongPtr(windowHandle, GwlExStyle, new nint(exStyles));
         // The WorkerW also contains Windows' static wallpaper composition child. Keep
-        // NowSpinning above that child, while the entire WorkerW remains below the
+        // Wynil above that child, while the entire WorkerW remains below the
         // separate SHELLDLL_DefView/SysListView32 icon host.
         var attached = GetParent(windowHandle) == hierarchy.WallpaperWorker &&
             SetWindowPos(windowHandle, nint.Zero, x, y, width, height, SwpNoActivate | SwpShowWindow);
@@ -114,7 +114,7 @@ internal static partial class WorkerWInterop
     {
         try
         {
-            var directory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NowSpinning", "Logs");
+            var directory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Wynil", "Logs");
             Directory.CreateDirectory(directory);
             File.AppendAllText(Path.Combine(directory, "wallpaper.log"),
                 $"{DateTimeOffset.Now:O} {result}; Progman=0x{hierarchy.Progman:X}; IconWorkerW=0x{hierarchy.IconWorker:X}; SHELLDLL_DefView=0x{hierarchy.ShellView:X}; SysListView32=0x{hierarchy.IconList:X}; WallpaperWorkerW=0x{hierarchy.WallpaperWorker:X}; Wallpaper=0x{wallpaper:X}{Environment.NewLine}");

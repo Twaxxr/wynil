@@ -6,7 +6,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $projectRoot = Split-Path -Parent $PSScriptRoot
-$frontendRoot = Join-Path $projectRoot 'src\NowSpinning.Frontend'
+$frontendRoot = Join-Path $projectRoot 'src\Wynil.Frontend'
 $livelyRoot = Join-Path $projectRoot 'lively-package'
 $publishRoot = Join-Path $projectRoot 'artifacts\publish\win-x64'
 
@@ -19,8 +19,8 @@ try {
 Get-ChildItem -LiteralPath $livelyRoot -Force | Where-Object { $_.Name -notin @('LivelyInfo.json', 'README.md', 'configure-lively.ps1') } | Remove-Item -Recurse -Force
 Copy-Item -Path (Join-Path $frontendRoot 'dist\*') -Destination $livelyRoot -Recurse -Force
 
-dotnet test (Join-Path $projectRoot 'NowSpinning.sln') -c $Configuration
-dotnet publish (Join-Path $projectRoot 'src\NowSpinning.App\NowSpinning.App.csproj') `
+dotnet test (Join-Path $projectRoot 'Wynil.sln') -c $Configuration
+dotnet publish (Join-Path $projectRoot 'src\Wynil.App\Wynil.App.csproj') `
     -c $Configuration -r win-x64 --self-contained true `
     -p:PublishSingleFile=false -p:PublishReadyToRun=true -o $publishRoot
 
@@ -35,5 +35,5 @@ if ($Installer) {
         if (Test-Path -LiteralPath $userPath) { $iscc = Get-Item $userPath }
     }
     if (-not $iscc) { throw 'Inno Setup 6 was not found. Install it, then run this script again with -Installer.' }
-    & $iscc (Join-Path $projectRoot 'installer\NowSpinning.iss')
+    & $iscc (Join-Path $projectRoot 'installer\Wynil.iss')
 }

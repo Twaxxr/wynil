@@ -4,9 +4,9 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Collections.Concurrent;
-using NowSpinning.Core.Models;
+using Wynil.Core.Models;
 
-namespace NowSpinning.Media;
+namespace Wynil.Media;
 
 public sealed class BrowserFallbackServer : IAsyncDisposable
 {
@@ -23,11 +23,11 @@ public sealed class BrowserFallbackServer : IAsyncDisposable
 
     public BrowserFallbackServer(string? tokenPath = null)
     {
-        tokenPath ??= Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NowSpinning", "browser-token.txt");
+        tokenPath ??= Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Wynil", "browser-token.txt");
         Directory.CreateDirectory(Path.GetDirectoryName(tokenPath)!);
         Token = File.Exists(tokenPath) ? File.ReadAllText(tokenPath).Trim() : Convert.ToHexString(RandomNumberGenerator.GetBytes(32)).ToLowerInvariant();
         if (!File.Exists(tokenPath)) File.WriteAllText(tokenPath, Token);
-        _listener.Prefixes.Add($"http://127.0.0.1:{Port}/nowspinning/");
+        _listener.Prefixes.Add($"http://127.0.0.1:{Port}/wynil/");
     }
 
     public string Token { get; }

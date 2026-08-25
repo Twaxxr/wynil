@@ -4,10 +4,10 @@ using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
-using NowSpinning.Core.Models;
-using NowSpinning.Core.Configuration;
+using Wynil.Core.Models;
+using Wynil.Core.Configuration;
 
-namespace NowSpinning.Wallpaper;
+namespace Wynil.Wallpaper;
 
 public sealed class WallpaperPreviewControl : System.Windows.Controls.UserControl, IDisposable
 {
@@ -31,6 +31,7 @@ public sealed class WallpaperPreviewControl : System.Windows.Controls.UserContro
         ClipToBounds = true;
         Focusable = false;
         IsTabStop = false;
+        _webView.DefaultBackgroundColor = System.Drawing.Color.FromArgb(255, 11, 17, 26);
         Content = _webView;
         Loaded += OnLoaded;
     }
@@ -55,13 +56,13 @@ public sealed class WallpaperPreviewControl : System.Windows.Controls.UserContro
         {
             var frontend = Path.Combine(AppContext.BaseDirectory, "Frontend");
             if (!File.Exists(Path.Combine(frontend, "index.html"))) return;
-            var userData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NowSpinning", "PreviewWebView2");
+            var userData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Wynil", "PreviewWebView2");
             var environment = await CoreWebView2Environment.CreateAsync(userDataFolder: userData);
             await _webView.EnsureCoreWebView2Async(environment);
-            _webView.CoreWebView2.SetVirtualHostNameToFolderMapping("app.nowspinning.local", frontend, CoreWebView2HostResourceAccessKind.DenyCors);
-            var artwork = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NowSpinning", "Artwork");
+            _webView.CoreWebView2.SetVirtualHostNameToFolderMapping("app.wynil.local", frontend, CoreWebView2HostResourceAccessKind.DenyCors);
+            var artwork = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Wynil", "Artwork");
             Directory.CreateDirectory(artwork);
-            _webView.CoreWebView2.SetVirtualHostNameToFolderMapping("artwork.nowspinning.local", artwork, CoreWebView2HostResourceAccessKind.DenyCors);
+            _webView.CoreWebView2.SetVirtualHostNameToFolderMapping("artwork.wynil.local", artwork, CoreWebView2HostResourceAccessKind.DenyCors);
             _webView.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
             _webView.CoreWebView2.Settings.AreDevToolsEnabled = false;
             _webView.CoreWebView2.Settings.IsStatusBarEnabled = false;
@@ -69,7 +70,7 @@ public sealed class WallpaperPreviewControl : System.Windows.Controls.UserContro
             _webView.CoreWebView2.WebMessageReceived += OnWebMessageReceived;
             _webView.CoreWebView2.NavigationCompleted += OnNavigationCompleted;
             _bridge.Attach(_webView.CoreWebView2);
-            _webView.Source = new Uri("https://app.nowspinning.local/index.html");
+            _webView.Source = new Uri("https://app.wynil.local/index.html");
         }
         finally { _initializing = false; }
     }

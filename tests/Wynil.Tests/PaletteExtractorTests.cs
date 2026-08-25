@@ -1,6 +1,6 @@
-using NowSpinning.Core.Artwork;
+using Wynil.Core.Artwork;
 
-namespace NowSpinning.Tests;
+namespace Wynil.Tests;
 
 [TestClass]
 public sealed class PaletteExtractorTests

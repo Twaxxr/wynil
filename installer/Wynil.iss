@@ -1,7 +1,7 @@
-#define AppName "NowSpinning"
+#define AppName "Wynil"
 #define AppVersion "1.0.0"
-#define AppPublisher "NowSpinning contributors"
-#define AppExeName "NowSpinning.App.exe"
+#define AppPublisher "Wynil contributors"
+#define AppExeName "Wynil.App.exe"
 #define ProjectRoot ".."
 
 [Setup]
@@ -12,7 +12,7 @@ AppPublisher={#AppPublisher}
 DefaultDirName={autopf}\{#AppName}
 DefaultGroupName={#AppName}
 OutputDir={#ProjectRoot}\artifacts\installer
-OutputBaseFilename=NowSpinning-Setup-{#AppVersion}
+OutputBaseFilename=Wynil-Setup-{#AppVersion}
 Compression=lzma2/max
 SolidCompression=yes
 WizardStyle=modern
@@ -25,7 +25,7 @@ RestartApplications=no
 
 [Tasks]
 Name: "desktopicon"; Description: "Create a desktop shortcut"; GroupDescription: "Shortcuts:"; Flags: unchecked
-Name: "startup"; Description: "Start NowSpinning when I sign in"; GroupDescription: "Startup:"; Flags: unchecked
+Name: "startup"; Description: "Start Wynil when I sign in"; GroupDescription: "Startup:"; Flags: unchecked
 Name: "keepsettings"; Description: "Keep my settings and artwork cache when uninstalling"; GroupDescription: "User data:"; Flags: checkedonce
 
 [Files]
@@ -40,16 +40,16 @@ Name: "{group}\Uninstall {#AppName}"; Filename: "{uninstallexe}"
 Name: "{autodesktop}\{#AppName}"; Filename: "{app}\{#AppExeName}"; Tasks: desktopicon
 
 [Registry]
-Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "NowSpinning"; ValueData: """{app}\{#AppExeName}"" --background"; Flags: uninsdeletevalue; Tasks: startup
-Root: HKCU; Subkey: "Software\NowSpinning"; ValueType: dword; ValueName: "KeepSettings"; ValueData: "1"; Tasks: keepsettings
-Root: HKCU; Subkey: "Software\NowSpinning"; ValueType: dword; ValueName: "KeepSettings"; ValueData: "0"; Check: not WizardIsTaskSelected('keepsettings')
+Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "Wynil"; ValueData: """{app}\{#AppExeName}"" --background"; Flags: uninsdeletevalue; Tasks: startup
+Root: HKCU; Subkey: "Software\Wynil"; ValueType: dword; ValueName: "KeepSettings"; ValueData: "1"; Tasks: keepsettings
+Root: HKCU; Subkey: "Software\Wynil"; ValueType: dword; ValueName: "KeepSettings"; ValueData: "0"; Check: not WizardIsTaskSelected('keepsettings')
 
 [Run]
 Filename: "{tmp}\MicrosoftEdgeWebview2Setup.exe"; Parameters: "/silent /install"; StatusMsg: "Installing Microsoft WebView2 Runtime..."; Flags: waituntilterminated; Check: not IsWebView2Installed
 Filename: "{app}\{#AppExeName}"; Description: "Launch {#AppName}"; Flags: nowait postinstall skipifsilent
 
 [UninstallDelete]
-Type: filesandordirs; Name: "{localappdata}\NowSpinning"; Check: not KeepSettings
+Type: filesandordirs; Name: "{localappdata}\Wynil"; Check: not KeepSettings
 
 [Code]
 function IsWebView2Installed: Boolean;
@@ -64,5 +64,5 @@ function KeepSettings: Boolean;
 var
   Value: Cardinal;
 begin
-  Result := RegQueryDWordValue(HKCU, 'Software\NowSpinning', 'KeepSettings', Value) and (Value = 1);
+  Result := RegQueryDWordValue(HKCU, 'Software\Wynil', 'KeepSettings', Value) and (Value = 1);
 end;

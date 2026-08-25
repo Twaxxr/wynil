@@ -1,4 +1,4 @@
-<UserControl x:Class="NowSpinning.App.Views.PerformanceSettingsView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:NowSpinning.App.Controls">
+<UserControl x:Class="Wynil.App.Views.PerformanceSettingsView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:Wynil.App.Controls">
     <ScrollViewer VerticalScrollBarVisibility="Auto"><StackPanel Margin="0,22,8,16">
         <TextBlock Text="Power &amp; Rendering" Style="{StaticResource SectionHeading}" />
         <controls:SettingToggle Title="Low-power mode" Description="Limits effects and uses the lower frame-rate target." IconData="M6,1 L2,6 5,6 4,10 9,4 6,4Z" IsChecked="{Binding Options.Scene.LowPowerMode}" />

@@ -1,6 +1,6 @@
 using System.Windows.Input;
 
-namespace NowSpinning.Core.Mvvm;
+namespace Wynil.Core.Mvvm;
 
 public sealed class AsyncRelayCommand : ICommand
 {

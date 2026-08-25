@@ -3,7 +3,7 @@
     <Style TargetType="TabControl">
         <Setter Property="Background" Value="Transparent" /><Setter Property="BorderThickness" Value="0" />
         <Setter Property="Template">
-            <Setter.Value><ControlTemplate TargetType="TabControl"><Grid><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions><TabPanel IsItemsHost="True" /><Border Grid.Row="1" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0"><ContentPresenter ContentSource="SelectedContent" /></Border></Grid></ControlTemplate></Setter.Value>
+            <Setter.Value><ControlTemplate TargetType="TabControl"><Grid><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions><TabPanel IsItemsHost="True" /><Border Grid.Row="1" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0" ClipToBounds="True"><ContentPresenter x:Name="ContentHost" ContentSource="SelectedContent" Opacity="1" RenderTransformOrigin="0.5,0"><ContentPresenter.RenderTransform><TranslateTransform Y="0" /></ContentPresenter.RenderTransform></ContentPresenter></Border></Grid><ControlTemplate.Triggers><EventTrigger RoutedEvent="Selector.SelectionChanged"><BeginStoryboard><Storyboard><DoubleAnimation Storyboard.TargetName="ContentHost" Storyboard.TargetProperty="Opacity" From="0.45" To="1" Duration="0:0:0.22" /><DoubleAnimation Storyboard.TargetName="ContentHost" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.Y)" From="10" To="0" Duration="0:0:0.26" /></Storyboard></BeginStoryboard></EventTrigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value>
         </Setter>
     </Style>
     <Style TargetType="TabItem">

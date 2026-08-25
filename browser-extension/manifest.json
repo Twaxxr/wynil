@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "NowSpinning Local Media Bridge",
+  "name": "Wynil Local Media Bridge",
   "version": "1.0.0",
-  "description": "Sends media metadata to the local NowSpinning companion only.",
+  "description": "Sends media metadata to the local Wynil companion only.",
   "permissions": ["storage"],
   "host_permissions": ["http://127.0.0.1/*", "ws://127.0.0.1/*"],
   "background": { "service_worker": "service-worker.js" },

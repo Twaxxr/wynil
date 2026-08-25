@@ -1,7 +1,7 @@
-using NowSpinning.Core.Models;
-using NowSpinning.Media;
+using Wynil.Core.Models;
+using Wynil.Media;
 
-namespace NowSpinning.Tests;
+namespace Wynil.Tests;
 
 [TestClass]
 public sealed class MediaSessionSelectorTests

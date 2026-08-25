@@ -1,9 +1,9 @@
 using System.Runtime.InteropServices.WindowsRuntime;
-using NowSpinning.Core.Models;
+using Wynil.Core.Models;
 using Windows.Media.Control;
-using NowSpinning.Core.Logging;
+using Wynil.Core.Logging;
 
-namespace NowSpinning.Media;
+namespace Wynil.Media;
 
 public sealed class WindowsMediaSessionService : IMediaSessionService
 {

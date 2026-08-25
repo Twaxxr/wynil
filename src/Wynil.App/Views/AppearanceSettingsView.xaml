@@ -1,8 +1,8 @@
-<UserControl x:Class="NowSpinning.App.Views.AppearanceSettingsView"
+<UserControl x:Class="Wynil.App.Views.AppearanceSettingsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:controls="clr-namespace:NowSpinning.App.Controls"
-             xmlns:config="clr-namespace:NowSpinning.Core.Configuration;assembly=NowSpinning.Core">
+             xmlns:controls="clr-namespace:Wynil.App.Controls"
+             xmlns:config="clr-namespace:Wynil.Core.Configuration;assembly=Wynil.Core">
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
         <StackPanel Margin="0,22,8,16">
             <TextBlock Text="Theme preset" Style="{StaticResource SectionHeading}" />

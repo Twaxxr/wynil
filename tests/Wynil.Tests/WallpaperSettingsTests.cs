@@ -1,7 +1,7 @@
 using System.Text.Json;
-using NowSpinning.Core.Configuration;
+using Wynil.Core.Configuration;
 
-namespace NowSpinning.Tests;
+namespace Wynil.Tests;
 
 [TestClass]
 public sealed class WallpaperSettingsTests

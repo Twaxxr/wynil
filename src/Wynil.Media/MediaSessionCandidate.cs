@@ -1,5 +1,5 @@
-using NowSpinning.Core.Models;
+using Wynil.Core.Models;
 
-namespace NowSpinning.Media;
+namespace Wynil.Media;
 
 public sealed record MediaSessionCandidate(MediaTrack Track, DateTimeOffset LastUpdated);

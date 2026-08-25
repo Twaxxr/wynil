@@ -1,4 +1,4 @@
-const endpoint = 'ws://127.0.0.1:17842/nowspinning/';
+const endpoint = 'ws://127.0.0.1:17842/wynil/';
 let socket;
 let queued;
 

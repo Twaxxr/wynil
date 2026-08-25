@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace NowSpinning.Core.Models;
+namespace Wynil.Core.Models;
 
 [Flags]
 public enum MediaChangeKind
