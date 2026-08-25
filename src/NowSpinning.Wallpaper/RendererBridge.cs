@@ -21,6 +21,7 @@ internal sealed class RendererBridge
     private MediaTrack? _sentTrack;
     private MediaTrack _latestTrack = MediaTrack.Empty;
     private WallpaperSettings _latestSettings = new();
+    private float _latestAudioLevel;
     private bool _ready;
     private bool _interactionEnabled;
     private bool _runtimePaused;
@@ -40,6 +41,7 @@ internal sealed class RendererBridge
         UpdateInteraction(_interactionEnabled);
         UpdateRuntimePaused(_runtimePaused);
         UpdatePointer(_pointerX, _pointerY);
+        UpdateAudioLevel(_latestAudioLevel);
     }
 
     public void UpdateInteraction(bool enabled)
@@ -59,6 +61,12 @@ internal sealed class RendererBridge
         _pointerX = Math.Clamp(x, -1, 1);
         _pointerY = Math.Clamp(y, -1, 1);
         if (_ready && _webView is not null) Post("pointer.update", new { x = _pointerX, y = _pointerY });
+    }
+
+    public void UpdateAudioLevel(float level)
+    {
+        _latestAudioLevel = float.IsFinite(level) ? Math.Clamp(level, 0, 1) : 0;
+        if (_ready && _webView is not null) Post("audio.level", new { level = _latestAudioLevel });
     }
 
     public Task UpdateTrackAsync(MediaTrack track)

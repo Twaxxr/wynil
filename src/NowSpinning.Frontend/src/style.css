@@ -12,6 +12,14 @@
   --ambient-opacity: .6;
   --grain-opacity: .08;
   --dust-opacity: .35;
+  --audio-level: 0;
+  --audio-platter-scale: 1;
+  --audio-platter-rotation: 0deg;
+  --audio-tonearm-angle: 0deg;
+  --audio-sheen-opacity: 1;
+  --ambient-opacity-live: .6;
+  --dust-opacity-live: .35;
+  --audio-glow-radius: 10px;
   --vinyl-duration: 1.8s;
   --transition-duration: .8s;
 }
@@ -58,20 +66,20 @@ h1 { margin: 0; max-width: 100%; font-family: Georgia, serif; font-size: clamp(2
 .album { margin: 1% 0 0; font-size: clamp(9px,.75vw,15px); color: #918a81; }
 
 .deck { position: absolute; right: clamp(3%, 6vw, 8%); top: 50%; width: min(49vw, 900px); aspect-ratio: 1.16; transform: translate(var(--parallax-fg-x), calc(-50% + var(--parallax-fg-y))); border-radius: 2.8%; background: linear-gradient(135deg,#dbd2bd,#9f9784 55%,#c9bea6); box-shadow: 0 36px 65px #1f080077, inset 0 0 0 1px #fff6, inset 0 0 45px #514b3c55; }
-.platter { position: absolute; width: 78%; aspect-ratio: 1; left: 3.5%; top: 4%; border-radius: 50%; background: radial-gradient(circle,#51504d 0 65%,#9a998f 66% 69%,#4c4b47 70% 72%,#b7b4a8 73%); filter: drop-shadow(0 12px 12px #0008); }
+.platter { position: absolute; width: 78%; aspect-ratio: 1; left: 3.5%; top: 4%; border-radius: 50%; background: radial-gradient(circle,#51504d 0 65%,#9a998f 66% 69%,#4c4b47 70% 72%,#b7b4a8 73%); filter: drop-shadow(0 12px 12px #0008); transform: scale(var(--audio-platter-scale)) rotate(var(--audio-platter-rotation)); transform-origin: center; transition: transform .08s ease-out; }
 .record { position: absolute; inset: 5.5%; border-radius: 50%; background: repeating-radial-gradient(circle,#121315 0 2px,#090a0b 3px,#1a1b1c 4px,#090a0b 5px); box-shadow: inset 0 0 45px #000, 0 1px 1px #fff4; will-change: transform; }
 .playing .record { animation: spin var(--vinyl-duration) linear infinite, wobble 3.6s ease-in-out infinite; }
-.record-sheen { position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(from 15deg,transparent 0 10%,rgba(255,255,255,.16) 13%,transparent 21% 46%,rgba(166,193,255,.09) 52%,transparent 63%); mix-blend-mode: screen; }
+.record-sheen { position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(from 15deg,transparent 0 10%,rgba(255,255,255,.16) 13%,transparent 21% 46%,rgba(166,193,255,.09) 52%,transparent 63%); mix-blend-mode: screen; opacity: var(--audio-sheen-opacity); }
 .label { position: absolute; width: 25%; aspect-ratio: 1; left: 37.5%; top: 37.5%; border-radius: 50%; background-size: cover; background-position: center; box-shadow: 0 0 0 2px #111; }
 .label span { font-size: clamp(8px, 1vw, 18px); }
 .spindle { position: absolute; width: 2.5%; aspect-ratio: 1; left: 48.75%; top: 48.75%; border-radius: 50%; background: #d7d7d4; box-shadow: 0 1px 4px #000; }
 .tonearm-base { position:absolute; width:12%; aspect-ratio:1; right:5.7%; top:11%; border-radius:50%; background:radial-gradient(circle,#aaa 0 16%,#242525 18% 50%,#777 52% 64%,#202020 67%); box-shadow:0 8px 12px #0007; }
 .tonearm-base i { position:absolute; inset:43%; border-radius:50%; background:#e5dfd2; }
 .tonearm { position:absolute; width:42%; height:2.2%; right:7.5%; top:21%; border-radius:99px; transform:rotate(68deg); transform-origin:92% 50%; background:linear-gradient(#efeee9,#777,#d7d4ca); box-shadow:0 5px 7px #0007; transition: transform 1.35s cubic-bezier(.2,.8,.25,1); }
-.tonearm-enabled.playing .tonearm { transform:rotate(79deg); }
+.tonearm-enabled.playing .tonearm { transform:rotate(calc(79deg + var(--audio-tonearm-angle))); }
 .headshell { position:absolute; width:17%; height:210%; left:-6%; top:-55%; border-radius:16% 3% 3% 16%; background:linear-gradient(100deg,#1a1b1b,#8c8c86); transform:rotate(-10deg); }
 .playing .headshell { animation:vibrate .12s ease-in-out infinite alternate; }
-.power-led { position:absolute; width:1.1%; aspect-ratio:1; right:9%; bottom:13%; border-radius:50%; background:#9a301f; box-shadow:0 0 10px #f33; }
+.power-led { position:absolute; width:1.1%; aspect-ratio:1; right:9%; bottom:13%; border-radius:50%; background:#9a301f; box-shadow:0 0 var(--audio-glow-radius) #f33; }
 .playing .power-led { background:#e85b39; }
 .speed-knob { position:absolute; width:8.5%; aspect-ratio:1; right:5.5%; bottom:6%; border-radius:50%; background:radial-gradient(circle at 35% 30%,#93714c,#392516 72%); box-shadow:0 6px 9px #0008; }
 .brand { position:absolute; left:4.5%; bottom:3.5%; padding:.8% 1.4%; border-radius:3px; color:#ddd7cc; background:#242424; font-size:clamp(6px,.52vw,10px); letter-spacing:.18em; }
@@ -101,7 +109,7 @@ h1 { margin: 0; max-width: 100%; font-family: Georgia, serif; font-size: clamp(2
 }
 
 /* Renderer settings: every material and sleeve preset is intentionally distinct. */
-.scene::after { content:""; position:absolute; inset:0; z-index:-1; pointer-events:none; opacity:0; transition:opacity .7s; background:radial-gradient(circle at 66% 42%, rgba(var(--ambient-rgb), calc(var(--ambient-opacity) * .45)), transparent 42%); }
+.scene::after { content:""; position:absolute; inset:0; z-index:-1; pointer-events:none; opacity:0; transition:opacity .7s; background:radial-gradient(circle at 66% 42%, rgba(var(--ambient-rgb), calc(var(--ambient-opacity-live) * .45)), transparent 42%); }
 .ambient-enabled.scene::after { opacity:1; }
 .scene[data-desk="dark-walnut"] { background:repeating-linear-gradient(3deg,transparent 0 8px,#12090544 9px 11px),linear-gradient(100deg,#160d09,#402116 42%,#1d0f0b); }
 .scene[data-desk="natural-oak"] { background:repeating-linear-gradient(1deg,#0000 0 10px,#80582a22 11px 13px),linear-gradient(95deg,#d0a66d,#9e7140 55%,#c4945b); }
@@ -139,7 +147,7 @@ h1.long { font-size:clamp(17px,1.75vw,34px); }
 .scene[data-sleeve="no-sleeve"] .deck { right:50%; transform:translate(calc(50% + var(--parallax-fg-x)),calc(-50% + var(--parallax-fg-y))); }
 
 .dust { position:absolute; inset:0; z-index:18; opacity:0; pointer-events:none; overflow:hidden; }
-.dust-enabled .dust { opacity:var(--dust-opacity); }
+.dust-enabled .dust { opacity:var(--dust-opacity-live); }
 .dust i { position:absolute; left:var(--x); top:var(--y); width:2px; height:2px; border-radius:50%; background:#fff7d6; box-shadow:0 0 3px #fff; animation:dust-float 9s linear infinite; animation-delay:var(--delay); }
 .low-power .dust i,.idle .dust i { animation-play-state:paused; }
 @keyframes dust-float { from { transform:translate3d(0,20px,0); } to { transform:translate3d(30px,-45px,0); } }

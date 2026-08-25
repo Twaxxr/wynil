@@ -111,6 +111,12 @@ public sealed class NativeWallpaperHost : IWallpaperHost
         foreach (var window in _windows) await window.SetTrackAsync(track);
     }
 
+    public void UpdateAudioLevel(float level)
+    {
+        var normalized = float.IsFinite(level) ? Math.Clamp(level, 0, 1) : 0;
+        foreach (var window in _windows) window.SetAudioLevel(normalized);
+    }
+
     public async Task<bool> UpdateSettingsAsync(WallpaperSettings settings, bool requireAcknowledgement = true, CancellationToken cancellationToken = default)
     {
         var layoutChanged = _settings.SpanAcrossMonitors != settings.SpanAcrossMonitors ||

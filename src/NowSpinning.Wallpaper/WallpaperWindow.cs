@@ -72,6 +72,8 @@ internal sealed class WallpaperWindow : Window, IDisposable
     public Task<bool> SetSettingsAsync(WallpaperSettings settings, bool requireAcknowledgement, CancellationToken cancellationToken) =>
         _bridge.UpdateSettingsAsync(settings, requireAcknowledgement, cancellationToken);
 
+    public void SetAudioLevel(float level) => _bridge.UpdateAudioLevel(level);
+
     public void SetRuntimePaused(bool paused)
     {
         _runtimePaused = paused;

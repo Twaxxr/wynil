@@ -43,7 +43,8 @@ public partial class App : System.Windows.Application, IDisposable
                     : windowsMedia;
             }
             var wallpaperHost = new NativeWallpaperHost();
-            _viewModel = new MainWindowViewModel(options, mediaService, wallpaperHost, configurationPath);
+            var audioReactiveService = new AudioReactiveService();
+            _viewModel = new MainWindowViewModel(options, mediaService, wallpaperHost, configurationPath, audioReactiveService);
             _mainWindow = new MainWindow(_viewModel);
             _mainWindow.Closing += OnMainWindowClosing;
             CreateTrayIcon(options.ProductName);

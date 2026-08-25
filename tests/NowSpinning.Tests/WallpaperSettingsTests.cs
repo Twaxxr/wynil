@@ -24,6 +24,20 @@ public sealed class WallpaperSettingsTests
     }
 
     [TestMethod]
+    public async Task AudioReactiveAnimationSettingIsMigratedToScene()
+    {
+        var path = Path.GetTempFileName();
+        try
+        {
+            await File.WriteAllTextAsync(path, """{"configurationVersion":2,"animation":{"audioReactive":true}}""");
+            var options = await JsonConfigurationService.LoadAsync(path);
+            Assert.AreEqual(3, options.ConfigurationVersion);
+            Assert.IsTrue(options.Scene.AudioReactiveEnabled);
+        }
+        finally { File.Delete(path); }
+    }
+
+    [TestMethod]
     public async Task CorruptConfigurationFallsBackAndIsPreserved()
     {
         var directory = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));

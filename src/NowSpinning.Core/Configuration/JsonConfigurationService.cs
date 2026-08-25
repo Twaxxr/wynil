@@ -97,6 +97,8 @@ public static class JsonConfigurationService
             options.Scene.SpanAcrossMonitors = options.General.SpanAcrossMonitors;
             options.Scene.SelectedMonitor = options.General.SelectedMonitor;
         }
+        if (options.ConfigurationVersion < 3)
+            options.Scene.AudioReactiveEnabled = options.Animation.AudioReactive;
         _ = WallpaperSettingsValidator.ValidateAndNormalize(options.Scene);
         options.ConfigurationVersion = AppOptions.CurrentConfigurationVersion;
     }

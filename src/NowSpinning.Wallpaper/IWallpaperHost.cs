@@ -11,5 +11,6 @@ public interface IWallpaperHost : IAsyncDisposable
     Task StartAsync(CancellationToken cancellationToken = default);
     Task StopAsync(CancellationToken cancellationToken = default);
     Task UpdateTrackAsync(MediaTrack track, CancellationToken cancellationToken = default);
+    void UpdateAudioLevel(float level);
     Task<bool> UpdateSettingsAsync(WallpaperSettings settings, bool requireAcknowledgement = true, CancellationToken cancellationToken = default);
 }

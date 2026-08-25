@@ -2,7 +2,7 @@ namespace NowSpinning.Core.Configuration;
 
 public sealed class AppOptions
 {
-    public const int CurrentConfigurationVersion = 2;
+    public const int CurrentConfigurationVersion = 3;
     public int ConfigurationVersion { get; set; }
     public string ProductName { get; set; } = "NowSpinning";
     public bool DeveloperSimulationMode { get; set; }
@@ -44,6 +44,7 @@ public sealed class WallpaperSettings
     public double VinylSpeed { get; set; } = 1;
     public double TransitionSeconds { get; set; } = .8;
     public bool TonearmAnimation { get; set; } = true;
+    public bool AudioReactiveEnabled { get; set; }
     public bool ReduceMotion { get; set; }
     public int TargetFps { get; set; } = 60;
     public bool PauseDuringFullscreenApps { get; set; } = true;

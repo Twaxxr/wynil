@@ -4,6 +4,7 @@ using System.Windows.Media;
 using NowSpinning.Core.Configuration;
 using NowSpinning.Core.Models;
 using NowSpinning.Core.Mvvm;
+using NowSpinning.Core.Logging;
 using NowSpinning.Media;
 using NowSpinning.Settings;
 using NowSpinning.Wallpaper;
@@ -22,6 +23,7 @@ public sealed class MainWindowViewModel : ObservableObject, IAsyncDisposable
     private readonly string _configurationPath;
     private readonly AsyncRelayCommand _saveSettingsCommand;
     private readonly DispatcherTimer _toastTimer;
+    private readonly AudioReactiveService? _audioReactiveService;
     private MediaTrack _currentTrack = MediaTrack.Empty;
     private string _status = "Starting media service…";
     private string _toastText = string.Empty;
@@ -33,14 +35,16 @@ public sealed class MainWindowViewModel : ObservableObject, IAsyncDisposable
     private DateTimeOffset _lastMediaChange = DateTimeOffset.MinValue;
     private string _lastError = "None";
 
-    public MainWindowViewModel(AppOptions options, IMediaSessionService mediaService, IWallpaperHost wallpaperHost, string configurationPath)
+    public MainWindowViewModel(AppOptions options, IMediaSessionService mediaService, IWallpaperHost wallpaperHost, string configurationPath, AudioReactiveService? audioReactiveService = null)
     {
         Options = options;
         _previewSettings = options.Scene.Clone();
         _mediaService = mediaService;
         _wallpaperHost = wallpaperHost;
         _configurationPath = configurationPath;
+        _audioReactiveService = audioReactiveService;
         _mediaService.CurrentTrackChanged += OnTrackChanged;
+        if (_audioReactiveService is not null) _audioReactiveService.LevelChanged += OnAudioLevelChanged;
         _wallpaperHost.CommandReceived += OnWallpaperCommand;
 
         ToggleWallpaperCommand = new AsyncRelayCommand(ToggleWallpaperAsync);
@@ -159,6 +163,7 @@ public sealed class MainWindowViewModel : ObservableObject, IAsyncDisposable
         PreviewSettings = Options.Scene.Clone();
         IsDirty = true;
         if (WallpaperRunning) await _wallpaperHost.UpdateSettingsAsync(Options.Scene, false);
+        await ConfigureAudioReactiveAsync();
     }
 
     public async Task InitializeAsync()
@@ -189,6 +194,7 @@ public sealed class MainWindowViewModel : ObservableObject, IAsyncDisposable
             await _wallpaperHost.UpdateTrackAsync(CurrentTrack);
             _ = await _wallpaperHost.UpdateSettingsAsync(Options.Scene);
             WallpaperRunning = true;
+            await ConfigureAudioReactiveAsync();
             Status = "Live wallpaper running on all monitors";
             ShowToast("Wallpaper started");
         }
@@ -205,6 +211,7 @@ public sealed class MainWindowViewModel : ObservableObject, IAsyncDisposable
     {
         await _wallpaperHost.StopAsync();
         WallpaperRunning = false;
+        await ConfigureAudioReactiveAsync();
         Status = "Wallpaper paused";
         ShowToast("Wallpaper stopped");
     }
@@ -315,6 +322,47 @@ public sealed class MainWindowViewModel : ObservableObject, IAsyncDisposable
         });
     }
 
+    private void OnAudioLevelChanged(object? sender, float level)
+    {
+        var dispatcher = System.Windows.Application.Current?.Dispatcher;
+        if (dispatcher is null) return;
+        _ = dispatcher.BeginInvoke(() =>
+        {
+            if (ShouldCaptureAudio) _wallpaperHost.UpdateAudioLevel(level);
+        });
+    }
+
+    private bool ShouldCaptureAudio => WallpaperRunning && Options.Scene.AudioReactiveEnabled &&
+        !Options.Scene.ReduceMotion && !Options.Scene.LowPowerMode;
+
+    private Task ConfigureAudioReactiveAsync()
+    {
+        if (_audioReactiveService is null) return Task.CompletedTask;
+
+        var shouldRun = ShouldCaptureAudio;
+        if (shouldRun)
+        {
+            try
+            {
+                _audioReactiveService.Start();
+            }
+            catch (Exception exception)
+            {
+                AppLog.Write("audio_reactive.start_failed", new { error = exception.Message });
+                _lastError = exception.Message;
+                OnPropertyChanged(nameof(LastError));
+                ShowToast("Audio-reactive mode unavailable");
+            }
+        }
+        else
+        {
+            _audioReactiveService.Stop();
+            _wallpaperHost.UpdateAudioLevel(0);
+        }
+
+        return Task.CompletedTask;
+    }
+
     private void OnWallpaperCommand(object? sender, string command)
     {
         _ = command switch
@@ -348,6 +396,11 @@ public sealed class MainWindowViewModel : ObservableObject, IAsyncDisposable
         _toastTimer.Tick -= OnToastTimerTick;
         _mediaService.CurrentTrackChanged -= OnTrackChanged;
         _wallpaperHost.CommandReceived -= OnWallpaperCommand;
+        if (_audioReactiveService is not null)
+        {
+            _audioReactiveService.LevelChanged -= OnAudioLevelChanged;
+            _audioReactiveService.Dispose();
+        }
         await _wallpaperHost.DisposeAsync();
         await _mediaService.DisposeAsync();
     }

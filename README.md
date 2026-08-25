@@ -16,6 +16,7 @@ NowSpinning is an original Windows 10/11 live wallpaper that turns the current W
 - Deduplicated artwork cache, expiration/size trimming support, and palette/contrast extraction
 - Authenticated loopback browser fallback with strict message validation and payload limits
 - Optional NAudio WASAPI loopback level analysis; no audio is stored or transmitted
+- Opt-in audio-reactive visuals that subtly drive vinyl wobble, ambient lighting, dust, and tonearm movement
 - Lively Wallpaper export using the same production frontend and authenticated local companion
 - Self-contained x64 release and Inno Setup installer with conditional WebView2 installation
 - Developer simulation mode and automated coverage for configuration, session selection, layout, messages, palettes, and state transitions

@@ -5,7 +5,7 @@ type SettingsPayload = {
   deskMaterial: string; albumSleeveStyle: string; filmGrainEnabled: boolean; dustParticlesEnabled: boolean;
   mouseParallaxEnabled: boolean; artworkAmbientLightingEnabled: boolean; showSongInformation: boolean;
   filmGrainIntensity: number; dustIntensity: number; parallaxStrength: number; ambientLightingIntensity: number;
-  vinylSpeed: number; transitionSeconds: number; tonearmAnimation: boolean; reduceMotion: boolean;
+  vinylSpeed: number; transitionSeconds: number; tonearmAnimation: boolean; audioReactiveEnabled: boolean; reduceMotion: boolean;
   targetFps: number; lowPowerMode: boolean;
 };
 type NativeMessage = { version: 1; type: string; requestId?: string; payload?: Record<string, unknown> };
@@ -28,6 +28,9 @@ let isPlaying = false;
 let mouseParallaxEnabled = true;
 let parallaxStrength = .25;
 let runtimePaused = false;
+let audioReactiveEnabled = false;
+let audioTarget = 0;
+let audioLevel = 0;
 let positionSeconds = 0;
 let durationSeconds = 0;
 let timelineAt = performance.now();
@@ -42,6 +45,29 @@ function applyPointer(x: number, y: number): void {
 }
 
 function normalized(value: string): string { return value.replace(/([a-z])([A-Z])/g, '$1-$2').replaceAll(' ', '-').toLowerCase(); }
+
+function clamp(value: number, min: number, max: number): number { return Math.max(min, Math.min(max, value)); }
+
+function applyAudioLevel(level: number): void {
+  audioTarget = audioReactiveEnabled && Number.isFinite(level) ? clamp(level, 0, 1) : 0;
+}
+
+function renderAudioVisuals(): void {
+  const active = audioReactiveEnabled && !scene.classList.contains('reduce-motion') && !scene.classList.contains('low-power');
+  const target = active ? audioTarget : 0;
+  const smoothing = target > audioLevel ? .24 : .12;
+  audioLevel += (target - audioLevel) * smoothing;
+  if (Math.abs(audioLevel) < .001 && target === 0) audioLevel = 0;
+  const level = active ? audioLevel : 0;
+  scene.style.setProperty('--audio-level', String(level));
+  scene.style.setProperty('--audio-platter-scale', String(1 + level * .006));
+  scene.style.setProperty('--audio-platter-rotation', `${level * 1.2}deg`);
+  scene.style.setProperty('--audio-tonearm-angle', `${level * 1.8}deg`);
+  scene.style.setProperty('--audio-sheen-opacity', String(active ? .78 + level * .22 : 1));
+  scene.style.setProperty('--ambient-opacity-live', String(clamp(Number(scene.dataset.ambientIntensity ?? .6) + level * .4, 0, 1)));
+  scene.style.setProperty('--dust-opacity-live', String(clamp(Number(scene.dataset.dustIntensity ?? .35) + level * .3, 0, 1)));
+  scene.style.setProperty('--audio-glow-radius', `${10 + level * 28}px`);
+}
 
 function setArtwork(url: string | null, identity: string): void {
   if (url === currentArtwork) return;
@@ -104,6 +130,13 @@ function applySettings(settings: SettingsPayload): void {
   scene.classList.toggle('reduce-motion', settings.reduceMotion);
   scene.classList.toggle('tonearm-enabled', settings.tonearmAnimation);
   scene.classList.toggle('low-power', settings.lowPowerMode);
+  audioReactiveEnabled = settings.audioReactiveEnabled;
+  scene.classList.toggle('audio-reactive', audioReactiveEnabled);
+  scene.dataset.ambientIntensity = String(settings.ambientLightingIntensity);
+  scene.dataset.dustIntensity = String(settings.dustIntensity);
+  scene.style.setProperty('--ambient-opacity-live', String(settings.ambientLightingIntensity));
+  scene.style.setProperty('--dust-opacity-live', String(settings.dustIntensity));
+  if (!audioReactiveEnabled) audioTarget = 0;
   mouseParallaxEnabled = settings.mouseParallaxEnabled;
   parallaxStrength = settings.parallaxStrength;
   scene.style.setProperty('--grain-opacity', String(settings.filmGrainIntensity * .45));
@@ -127,6 +160,8 @@ function acceptMessage(message: NativeMessage): void {
     positionSeconds = Number(message.payload?.positionSeconds ?? 0);
     durationSeconds = Number(message.payload?.durationSeconds ?? 0);
     timelineAt = performance.now();
+  } else if (message.type === 'audio.level') {
+    applyAudioLevel(Number(message.payload?.level ?? 0));
   } else if (message.type === 'settings.update') {
     try {
       applySettings(message.payload as unknown as SettingsPayload);
@@ -175,6 +210,7 @@ function updateTimeline(now: number): void {
     window.setTimeout(() => requestAnimationFrame(updateTimeline), 250);
     return;
   }
+  renderAudioVisuals();
   const value = Math.min(durationSeconds, positionSeconds + (isPlaying ? (now - timelineAt) / 1000 : 0));
   scene.style.setProperty('--progress', durationSeconds > 0 ? String(value / durationSeconds) : '0');
   requestAnimationFrame(updateTimeline);
