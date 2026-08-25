@@ -1,0 +1,10 @@
+**/bin/
+**/obj/
+.vs/
+.idea/
+*.user
+*.suo
+src/NowSpinning.Frontend/node_modules/
+src/NowSpinning.Frontend/dist/
+artifacts/
+TestResults/

@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "NowSpinning Local Media Bridge",
+  "version": "1.0.0",
+  "description": "Sends media metadata to the local NowSpinning companion only.",
+  "permissions": ["storage"],
+  "host_permissions": ["http://127.0.0.1/*", "ws://127.0.0.1/*"],
+  "background": { "service_worker": "service-worker.js" },
+  "options_page": "options.html",
+  "content_scripts": [{
+    "matches": ["https://*/*", "http://*/*"],
+    "js": ["content-script.js"],
+    "run_at": "document_start"
+  }],
+  "web_accessible_resources": [{
+    "resources": ["page-script.js"],
+    "matches": ["https://*/*", "http://*/*"]
+  }]
+}
